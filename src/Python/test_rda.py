@@ -1,14 +1,24 @@
 import pytest
 from rda import Rda
 
+
 def test_constructor_and_parsing_test():
     rda_string0 = ""
     rda0 = Rda.parse(rda_string0)
     assert "" == rda0.to_string()
+    value = "Two"
+    rda0.set_value(2,value)
+    assert value == rda0.get_value(2)
+    assert 1 == rda0.dimension()
 
     rda_string0 = "Xyz"
+    addr = [1,2,3]
     rda0 = Rda.parse(rda_string0)
-    assert rda_string0 == rda0.to_string()
+    assert rda_string0 == rda0.get_scalar_value()
+    rda0.set_value_array(addr, value)
+    assert rda_string0==rda0.get_scalar_value()
+    assert value == rda0.get_value_array(addr)
+    assert 3 == rda0.dimension()
 
     rda_string1 = "|\\|"
     rda1 = Rda.parse(rda_string1)
@@ -197,12 +207,13 @@ def test_rda_setter_getter_escaping_test():
     print("rda-after-adding-new-child-rda", rda_base.to_string_formatted())
     assert rda_sec3_new.content_equal(rda_base[3])
 
+
 def test_escaped_value_formatting_test():
-    quote_replaced =  "|;,^| AAA; xx^|^;^,x | B,b; C "
+    quote_replaced = "|;,^| AAA; xx^|^;^,x | B,b; C "
     rda1 = Rda.parse(quote_replaced)
     assert quote_replaced == rda1.to_string()
     v2_formatted_rda = rda1.to_string_formatted()
-    print('v2-formatted', v2_formatted_rda)
+    print("v2-formatted", v2_formatted_rda)
     rda2 = Rda.parse(v2_formatted_rda)
     assert quote_replaced == rda2.to_string()
 
@@ -210,7 +221,6 @@ def test_escaped_value_formatting_test():
     rda3 = Rda.parse(s2)
     assert s2 == rda3.to_string()
     s2f = rda3.to_string_formatted()
-    print('v2-formatted', s2)
+    print("v2-formatted", s2)
     rda4 = Rda.parse(s2f)
     assert s2 == rda4.to_string()
-
