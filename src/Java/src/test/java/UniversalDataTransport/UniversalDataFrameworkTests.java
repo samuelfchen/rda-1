@@ -11,10 +11,26 @@ public class UniversalDataFrameworkTests {
   public void ConstructorAndParsingTest() throws Exception {
     String rdaString0 = "";
     Rda rda0 = Rda.Parse(rdaString0);
-    assertEquals("", rda0.ToString()); //dim=0
-    rdaString0 = "Xyz";
-    rda0 = Rda.Parse(rdaString0);
     assertEquals(rdaString0, rda0.ToString()); //dim=0
+    String value = "Two";
+    rda0.SetValue(2, value);
+    assertEquals(value, rda0.GetValue(2)); //value at expanded container
+    assertEquals(1, rda0.Dimension());  //dim=1
+
+    rdaString0 = "Xyz";
+    int[] addr = new int[] { 1, 2, 3 };
+    rda0 = Rda.Parse(rdaString0);
+    assertEquals(rdaString0, rda0.GetScalarValue()); //test scalar value keeping
+    rda0.SetValue(addr, value);
+    assertEquals(rdaString0, rda0.GetScalarValue()); //test scalar value keeping
+    assertEquals(value, rda0.GetValue(addr)); //test stored value
+    assertEquals(3, rda0.Dimension());  //dim=3
+
+
+
+
+
+
     //delimiters are not mendatory for a RDA container, delimiters can be added (or be removed) as required
     String rdaString1 = "|\\|";
     Rda rda1 = Rda.Parse(rdaString1);
@@ -115,7 +131,7 @@ public class UniversalDataFrameworkTests {
         .concat("|\"SEC1\"\r\n")
         .concat("|\r\n")
         .concat("|\"SEC3\"");
-    //Assert.AreEqual(v2FormattedString, rdaString.ToString2());
+    //assertEquals(v2FormattedString, rdaString.ToString2());
     System.out.printf("input %s\n", v2FormattedString);
     System.out.printf("output %s\n", rda.ToStringFormatted());
     var s1 = rda.ToStringFormatted();
@@ -195,7 +211,7 @@ public class UniversalDataFrameworkTests {
     assertEquals("SEC1d", rda.GetRda(new int[] { 0, 1, 1 }).ToString()); //no encoding section when rda is dim-0
     rda.SetValue(new int[] { 0, 1, 4 }, "SE;|C1d4"); // ";|" before 'C1d4' are expected to be escaped..
     assertEquals("SE;|C1d4", rda.GetRda(new int[] { 0, 1, 4 }).ToString());
-    //Assert.AreEqual("SE;|C1d4", rda.GetSection(new int[] { 0, 1, 4 }).Payload);
+    //assertEquals("SE;|C1d4", rda.GetSection(new int[] { 0, 1, 4 }).Payload);
     assertEquals(
       "|;,\\|SEC1,SEC1c;SEC1b,SEC1d,,,SE\\;\\|C1d4|SEC2|SEC3",
       rda.ToString()

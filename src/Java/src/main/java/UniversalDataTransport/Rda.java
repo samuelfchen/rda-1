@@ -36,8 +36,8 @@ public class Rda implements IRdaSerializable {
     if (rda.Dimension() == 0) {
       SetScalarValue(rda.GetScalarValue());
     } else {
-      Children.clear();
-      Children.addAll(rda.Children);
+      Elements.clear();
+      Elements.addAll(rda.Elements);
     }
 
     return this;
@@ -47,12 +47,12 @@ public class Rda implements IRdaSerializable {
    * Base properties
    */
 
-  //These are the RDA's data storage. Children are for storing the "composite" content, when RDA's Dimension > 0
-  public List<Rda> Children = new ArrayList<Rda>();
+  //These are the RDA's data storage. Elements are for storing the "composite" content, when RDA's Dimension > 0
+  public List<Rda> Elements = new ArrayList<Rda>();
   //"scalar" content is used when RDA's Dimension = 0
   private String _scalarValue = null;
 
-  //for the whole RDA structure, encoding is fixed and shared amongs parent and children
+  //for the whole RDA structure, encoding is fixed and shared amongs parent and Elements
   public Rda Parent; // the upper-level RDA of which this RDA is a child
   private RdaEncoding _encoding;
 
@@ -108,9 +108,9 @@ public class Rda implements IRdaSerializable {
 
   //it's the max-depth towards the bottom, it determines the number of delimiters required for encoding this RDA,
   public int Dimension() {
-    //if (Children.Count == 1) { return Children[0].Dimension; }
+    //if (Elements.Count == 1) { return Elements[0].Dimension; }
     int maxChildDimemsion = -1;
-    for (Rda c : Children) {
+    for (Rda c : Elements) {
       maxChildDimemsion = Math.max(maxChildDimemsion, c.Dimension());
     }
 
@@ -130,14 +130,14 @@ public class Rda implements IRdaSerializable {
   //the client's 'string value' stored in this RDA.
   //For Dimension-0 (leaf) RDA, it's the stored scalar-value, for composite RDA (dimension > 0), it's the left-most child's scalar-value
   public String GetScalarValue() {
-    return Children.size() > 0
-      ? Children.get(0).GetScalarValue()
+    return Elements.size() > 0
+      ? Elements.get(0).GetScalarValue()
       : ((_scalarValue == null) ? "" : _scalarValue);
   }
 
-  //sets the scalar-value, and clears children (making this a Dimension-0 rda)
+  //sets the scalar-value, and clears Elements (making this a Dimension-0 rda)
   public void SetScalarValue(String value) {
-    Children.clear();
+    Elements.clear();
     _scalarValue = value;
   }
 
@@ -183,10 +183,10 @@ public class Rda implements IRdaSerializable {
       GlobalEncoding().ExtendDelimiters(Level() + childRda.Dimension() + 1); //throws Exception if limit is reached
       childRda.Parent = this;
 
-      Children.set(index, childRda);
+      Elements.set(index, childRda);
     } else {
       GlobalEncoding().ExtendDelimiters(Level() + 1); //throws Exception if limit is reached
-      Children.set(index, new Rda(this)); //make a dummy
+      Elements.set(index, new Rda(this)); //make a dummy
     }
   }
 
@@ -197,13 +197,13 @@ public class Rda implements IRdaSerializable {
       //push existing scalar value to become the left-most child's value
       Rda rda = new Rda(this);
       rda.SetScalarValue(_scalarValue);
-      Children.add(rda);
+      Elements.add(rda);
     }
 
     EnsureArrayLength(index); //creates dummies if required
 
     //the indexed child can be safely retrived
-    return Children.get(index);
+    return Elements.get(index);
   }
 
   //set a child RDA at the index'd location, extend the max index if required
@@ -225,7 +225,7 @@ public class Rda implements IRdaSerializable {
     } else {
       var child = GetRda(
         sectionIndexAddress[0]
-      );/* this auto extends the # of dummy children at this level, if it's over indexed (unless it exceeds dimension limit */
+      );/* this auto extends the # of dummy Elements at this level, if it's over indexed (unless it exceeds dimension limit */
 
       if (sectionIndexAddress.length == 1 || child == null) {
         return child;
@@ -264,34 +264,34 @@ public class Rda implements IRdaSerializable {
   }
 
   public void AddValue(String valueString) throws Exception {
-    SetValue(Children.size(), valueString);
+    SetValue(Elements.size(), valueString);
   }
 
   public void AddRda(Rda rda) throws Exception {
-    SetRda(Children.size(), rda);
+    SetRda(Elements.size(), rda);
   }
 
-  public String[] GetChildrenValueArray() {
+  public String[] GetElementsValueArray() {
     List<String> result = new ArrayList();
-    if (Children.size() == 0) {
+    if (Elements.size() == 0) {
       result.add(_scalarValue);
     } else {
-      for (var child : Children) {
+      for (var child : Elements) {
         result.add(child.GetScalarValue());
       }
     }
     return (String[]) result.toArray();
   }
 
-  public void SetChildrenValueArray(String[] value) {
-    Children.clear();
+  public void SetElementsValueArray(String[] value) {
+    Elements.clear();
     if (value == null || value.length == 0) {
       _scalarValue = null;
     } else {
       for (var s : value) {
         var child = new Rda(this);
         child.SetScalarValue(s);
-        Children.add(child);
+        Elements.add(child);
       }
     }
   }
@@ -305,7 +305,7 @@ public class Rda implements IRdaSerializable {
       return this.GetScalarValue().equals(other.GetScalarValue());
     } else {
       for (int i = 0; i < Length(); i++) {
-        if (Children.get(i).ContentEqual(other.Children.get(i)) == false) {
+        if (Elements.get(i).ContentEqual(other.Elements.get(i)) == false) {
           return false;
         }
       }
@@ -323,14 +323,14 @@ public class Rda implements IRdaSerializable {
 
   public char ChildDelimiter() {
     return GlobalEncoding().Delimiters[Level()];
-  } //the char that separates the immediate children elements
+  } //the char that separates the immediate Elements elements
 
   public char EscapeChar() {
     return GlobalEncoding().EscapeChar;
   }
 
   public int Length() {
-    return Children.size();
+    return Elements.size();
   }
 
   public char[] DelimitersInUse() {
@@ -346,7 +346,7 @@ public class Rda implements IRdaSerializable {
   }
 
   private void ParsePayload(String payloadString, boolean v2Formatted) {
-    Children.clear();
+    Elements.clear();
 
     //apply maximun unescape to "string-value" before it's stored
     //this will be reversed (escaped) when the value is used for assembling a payload section.
@@ -362,32 +362,32 @@ public class Rda implements IRdaSerializable {
 
     //make sure the parsing doesn't go beyond the RDA-string "levels" limit (set by the encoding header section)
     if (Level() < GlobalEncoding().Delimiters.length) {
-      List<String> sections = ParseChildrenContentSections(payloadString);
+      List<String> sections = ParseElementsContentSections(payloadString);
       //if (sections.Count > 1)
       //{
       for (String childPayLoad : sections) {
         var child = new Rda(this);
         child.ParsePayload(childPayLoad, v2Formatted);
 
-        Children.add(child);
+        Elements.add(child);
       }
     }
   }
 
   //shrink and remove unnecessary single branches
   private boolean TrimSoloBranch() {
-    if (Children.size() == 1) {
+    if (Elements.size() == 1) {
       if (
-        Children.get(0).Dimension() == 0 ||
-        Children.get(0).TrimSoloBranch() == true
+        Elements.get(0).Dimension() == 0 ||
+        Elements.get(0).TrimSoloBranch() == true
       ) {
-        this.SetScalarValue(Children.get(0).GetScalarValue());
+        this.SetScalarValue(Elements.get(0).GetScalarValue());
         return true;
       } else {
         return false;
       }
     } else {
-      for (var child : Children) {
+      for (var child : Elements) {
         child.TrimSoloBranch();
       }
       return false;
@@ -572,14 +572,14 @@ public class Rda implements IRdaSerializable {
   static String INDENT = new String(new char[] { ' ', ' ' });
 
   String Indent() {
-    if (Parent == null || Parent.Children.size() == 1) {
+    if (Parent == null || Parent.Elements.size() == 1) {
       return "";
     } else {
       return Parent.Indent() + INDENT;
     }
   }
 
-  //payload = <delimitor at this level> + concatenated children payloads (recurrsion)
+  //payload = <delimitor at this level> + concatenated Elements payloads (recurrsion)
   private String GetPayload(
     char[] delimiterChars,
     FORMATTING_VERSION formattingVersion
@@ -596,7 +596,7 @@ public class Rda implements IRdaSerializable {
       result.append(escaped.toString());
     } else {
       for (int i = 0; i <= LastNonDummyIndex(); i++) {
-        var child = Children.get(i);
+        var child = Elements.get(i);
         if (applyFormatting) {
           result.append(GetFormattingPrefix(i)); //TODO replace the below.
         }
@@ -613,7 +613,7 @@ public class Rda implements IRdaSerializable {
   private String GetFormattingPrefix(int index) {
     //if this is the first child ...
     if (index == 0) {
-      return Children.size() > 1 && Parent != null ? INDENT : "";
+      return Elements.size() > 1 && Parent != null ? INDENT : "";
     } else {
       return LINE_BREAK + Indent();
     }
@@ -621,11 +621,11 @@ public class Rda implements IRdaSerializable {
 
   //dummy child is 'place-holder' that is created when accessor 'over-indexed' the RDA existing values
   boolean IsDummy() {
-    if (Children.size() == 0) {
+    if (Elements.size() == 0) {
       return _scalarValue == null;
     } else {
-      //else it's a dummy if all children are dummy
-      for (var child : Children) {
+      //else it's a dummy if all Elements are dummy
+      for (var child : Elements) {
         if (child.IsDummy() == false) {
           return false;
         }
@@ -636,10 +636,10 @@ public class Rda implements IRdaSerializable {
   }
 
   int LastNonDummyIndex() {
-    int lastNonDummyIndex = Children.size() - 1;
+    int lastNonDummyIndex = Elements.size() - 1;
     while (
       lastNonDummyIndex >= 0 &&
-      Children.get(lastNonDummyIndex).IsDummy() == true
+      Elements.get(lastNonDummyIndex).IsDummy() == true
     ) {
       lastNonDummyIndex--;
     }
@@ -647,25 +647,25 @@ public class Rda implements IRdaSerializable {
   }
 
   private void EnsureArrayLength(int index) {
-    //1. turns a "leaf" node to a "composite" node - that is, a node that have children that can be indexed.
-    //if (Children.Count == 0)
+    //1. turns a "leaf" node to a "composite" node - that is, a node that have Elements that can be indexed.
+    //if (Elements.Count == 0)
     //{
     //    //push original_value down to become the 1st child
-    //    Children.Add(new Rda(null /* null payload */, this) { Content = _unescapedValueExpression });
+    //    Elements.Add(new Rda(null /* null payload */, this) { Content = _unescapedValueExpression });
     //}
 
-    //2. extend the children elements if over-indexing is required
-    int diff = index - Children.size() + 1;
+    //2. extend the Elements elements if over-indexing is required
+    int diff = index - Elements.size() + 1;
 
     while (diff > 0) {
       var dummy = new Rda(this);/*dummy*/
-      Children.add(dummy);
+      Elements.add(dummy);
       diff--;
     }
   }
 
   //helper - splits a (parent's) payload String  into child-content sections, implements the escaping logic
-  private List<String> ParseChildrenContentSections(String parentPayLoad) {
+  private List<String> ParseElementsContentSections(String parentPayLoad) {
     List<String> result = new ArrayList();
     if (parentPayLoad == null || parentPayLoad.equals("")) {
       result.add(parentPayLoad);
