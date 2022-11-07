@@ -11,23 +11,22 @@ Unlike XML and JSON, RDA container is **schema-less** and **application-independ
 
 ## A Schema-less Data Container
 
-Because XML and JSON are using application-dependent schemas for specifying the data types and the data structure of their content, only data with the specified types and structure can fit into an XML or JSON container. If an application changes its data format and requires changing the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be especially difficult if the other applications are developed and maintained by different parties.
+With XML or JSON, schemas are used for specifying the data types and the data structure, meaning XML/JSON containers are application specific, as only data with the specified types and structure can fit into a container. If an application changes its data format and requires changing the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be especially difficult if the other applications are developed and maintained by different parties.
 
-RDA is a data container format similar to XML and JSON, but specifically designed to avoid being application dependent[^1]:
+RDA is also a container format for structured data, but is specifically designed to be application independent[^1]:
 
-[^1]: Full details of the encoding rules can be found [here](https://sierrathedog.github.io/rda/rda-encoding-rule).
+[^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
-* Instead of using tags or markups, RDA uses a **simple** and **compact** delimited encoding for separating and structuring data elements; 
-* Instead of using named paths to navigate a storage "tree", RDA's storage is a multi-dimensional array that uses integer-based indexes for addressing data elements; and 
-* RDA container has only two supported data types: RDA or string[^2]. In an RDA container, composite data are converted and stored as RDAs, and scalar data are converted and stored as strings.   
-[^2]:RDA data types and data structure are [discussed here](https://sierrathedog.github.io/rda/data-type-and-data-structure). 
+* Instead of using tags or markups, RDA uses delimited encoding for separating and structuring data elements; 
+* Instead of using named paths for navigating a data elements "tree", RDA uses integer-based indexes for addressing data elements in its multi-dimensional array storage space; 
+* RDA encoding supports only two **generic** data types[^2]: type _RDA_ is for storing "composite" data values, and type _string_ is for storing "scalar/primitive" data values.   
+[^2]:RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
 
-Because an RDA container is schema-less and application independent, it allows "decoupling" the data-transport function from the business-related functions in the system's design. Using RDA can be particularly beneficial if applications in a connected system require both flexibility and easy-to-manage compatibility.
-
+Because an RDA container is schema-less and application independent, it allows "decoupling" the data-transport function from the business-related functions in applications' design. Using RDA can provide easy-to-manage flexibility and compatibility to connected but independent applications.
 
 ## Benefits Of Using RDA
  
-One use of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://sierrathedog.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to a Python program, and in the Python program, you can de-serialize a "User" object using the received RDA container, because unlike using XML/JSON, the "Person" object and the "User" object aren't necessarily "sharing the same schema" during serialization and de-serialization. 
+One use of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to a Python program, and in the Python program, you can de-serialize a "User" object using the received RDA container, because unlike using XML/JSON, the "Person" object and the "User" object aren't necessarily "sharing the same schema" during serialization and de-serialization. 
 
 Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because of RDA's recursive nature, each "pocket" in an RDA container is itself an RDA container. Multiple "children" RDAs can be placed inside a "parent" RDA, which means you can transfer data of multiple versions and multiple formats "side-by-side" in a single container. 
 
@@ -37,19 +36,19 @@ Thanks to its simple and efficient delimiter-based encoding, an RDA container is
 
 ## Getting Started
 
-This repo provides a simple and super lightweight RDA encoding API. To start, simply include the provided API source code files ([C#](https://github.com/sierrathedog/rda/tree/main/src/CSharp), [Java](https://github.com/sierrathedog/rda/blob/main/src/Java/), and [Python](https://github.com/sierrathedog/rda/blob/main/src/Python)) in your project and start programming using the API methods like in the example below.
+This repo includes the RDA-encoding spec and an RDA encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API methods like in the example below. 
 
-* **There is no installation or other dependency required for using the API.** *
+_*** There is no installation or other dependency required. ***_
 
-### Class *Rda*
+#### _API Part 1: Class Rda_
 
-All the RDA's encoding and decoding are wrapped in a class called "Rda" in the API. The **Rda class** is intuitively modeled as a "container", which has - 
+The _Rda class_ includes implementation of both RDA encoding and decoding, and is intuitively modeled as a "container". It provides the following methods:
 
 * **Setter-Getter**  methods are for assigning and retrieving the container's content using index-based addresses, 
 * **ToString** method is for RDA-encoding, i.e. serializing the container object and its content into a string, and 
 * **Parse** method is for RDA-decoding, i.e. converting an RDA-encoded string back to a Rda container object in a program.
 
-The following example code (in C#[^3]) gives a quick glimpse of how these methods are used - 
+The following example (in C#[^3]) gives a glimpse of how (simple) these methods can be used - 
 
 [^3]: Methods of using the Java API and the Python API are very similar.
 
@@ -76,30 +75,31 @@ class RdaDemo
 }
 ```
 
-### Interface *IRdaSerializable*
-The **IRdaSerializable interface** from the API is for applications implementing object serialization using RDA, which defines two methods:
+#### _API Part 2: Interface IRdaSerializable_
+
+The _IRdaSerializable interface_ is for applications implementing object serialization using RDA. It defines two methods:
 
 * **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
 
 * **FromRda(rda)**: restores the object's specific properties from values in a given RDA container, for de-serialization.
 
-Object serialization using RDA container is explained in-details in [this article](https://sierrathedog.github.io/rda/object-serialization-pattern).
+Object serialization using RDA container is explained in-details in [this article](https://foldda.github.io/rda/object-serialization-pattern).
 
-### Test Cases
+#### _Test Cases_
 
-The unit tests [[C#](https://github.com/sierrathedog/rda/tree/main/src/CSharp/UnitTests), [Java](https://github.com/sierrathedog/rda/blob/main/src/Java/src/test/java/UniversalDataTransport/UniversalDataFrameworkTests.java), [Python](https://github.com/sierrathedog/rda/blob/main/src/Python/test_rda.py)] from this repo are good places to find further examples of how to use the RDA API.
+The unit tests [[C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTests), [Java](https://github.com/foldda/rda/blob/main/src/Java/src/test/java/UniversalDataTransport/UniversalDataFrameworkTests.java), [Python](https://github.com/foldda/rda/blob/main/src/Python/test_rda.py)] from this repo are good places to find further examples of how to use the RDA API.
 
 ## More Details 
 
 Here are some articles and thoughts about RDA. (Warning: some of these are currently roughly drafted and begging for improvement. )
 
-- [RDA encoding rules](https://sierrathedog.github.io/rda/rda-encoding-rule)
-- [Data type and data structure in RDA](https://sierrathedog.github.io/rda/data-type-and-data-structure)
-- [RDA terms and definitions, and more API methods examples](https://sierrathedog.github.io/rda/api-terms-and-definitions)
-- [Generic and universal object-serialization](https://sierrathedog.github.io/rda/object-serialization-pattern)
-- [RDA tooling and "version-2" formatting](https://sierrathedog.github.io/rda/rda-tooling-and-formatting)
-- [Managing data exchange without using schema](https://sierrathedog.github.io/rda/metadata-vs-schema)
-- [Tips for writing a parser/encoder](https://sierrathedog.github.io/rda/parser-development-tips)
+- [RDA encoding rules](https://foldda.github.io/rda/rda-encoding-rule)
+- [Data type and data structure in RDA](https://foldda.github.io/rda/data-type-and-data-structure)
+- [RDA terms and definitions, and more API methods examples](https://foldda.github.io/rda/api-terms-and-definitions)
+- [Generic and universal object-serialization](https://foldda.github.io/rda/object-serialization-pattern)
+- [RDA tooling and "version-2" formatting](https://foldda.github.io/rda/rda-tooling-and-formatting)
+- [Managing data exchange without using schema](https://foldda.github.io/rda/metadata-vs-schema)
+- [Tips for writing a parser/encoder](https://foldda.github.io/rda/parser-development-tips)
 
 ## Contributing
 
