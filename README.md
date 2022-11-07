@@ -36,11 +36,11 @@ Thanks to its simple and efficient delimiter-based encoding, an RDA container is
 
 ## Getting Started
 
-This repo includes the RDA-encoding spec and an RDA encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API methods like in the example below. 
+This repo includes the RDA-encoding spec and an RDA encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). There are only two "parts" in the API. To start, simply include the provided source files in your project and start using the API methods like in the example below. 
 
 _*** There is no installation or other dependency required for using the API. ***_
 
-#### _API Part 1: Rda class_
+#### _API Part 1: the Rda class_
 
 The _Rda class_ includes implementation of both RDA encoding and decoding, and is intuitively modeled as a "container". It provides the following methods:
 
@@ -75,7 +75,7 @@ class RdaDemo
 }
 ```
 
-#### _API Part 2: IRdaSerializable interface_
+#### _API Part 2: the IRdaSerializable interface_
 
 The _IRdaSerializable interface_ is for applications to implement object serialization using RDA. It defines two methods:
 
@@ -91,7 +91,7 @@ The unit tests [[C#](https://github.com/foldda/rda/tree/main/src/CSharp/UnitTest
 
 ## More Details 
 
-Here are some articles and thoughts about RDA. (Warning: some of these are currently roughly drafted and begging for improvement. )
+The following links contain more details and thoughts about RDA. (Warning: some of these are only drafts and due for improvement. )
 
 - [RDA encoding rules](https://foldda.github.io/rda/rda-encoding-rule)
 - [Data type and data structure in RDA](https://foldda.github.io/rda/data-type-and-data-structure)
