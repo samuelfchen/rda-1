@@ -11,9 +11,9 @@ Unlike XML and JSON, RDA container is **schema-less** and **application-independ
 
 ## A Schema-less Data Container
 
-Because schemas are used in XML and JSON to specify the content's data type and data structure, data exchange using XML or JSON containers are therefore restricted to the specified data types and are application-dependent. If an application changes the data format and the schema, all its connected applications need to change their container-parsing logic so the data-exchange remains compatible. This can be especially difficult if the connected applications are developed and maintained by different parties. 
+Because XML and JSON are using application-dependent schemas for specifying the data types and the data structure of their content, only data with the specified types and structure can fit into an XML or JSON container. If an application changes its data format and requires changing the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be especially difficult if the other applications are developed and maintained by different parties.
 
-In contrast to XML/JSON, RDA is a container format[^1] designed for building data-exchange pipelines that require both flexibility and easy-to-manage compatibility -
+RDA is a data container format similar to XML and JSON, but specifically designed to avoid being application dependent[^1]:
 
 [^1]: Full details of the encoding rules can be found [here](https://sierrathedog.github.io/rda/rda-encoding-rule).
 
@@ -22,7 +22,8 @@ In contrast to XML/JSON, RDA is a container format[^1] designed for building dat
 * RDA container has only two supported data types: RDA or string[^2]. In an RDA container, composite data are converted and stored as RDAs, and scalar data are converted and stored as strings.   
 [^2]:RDA data types and data structure are [discussed here](https://sierrathedog.github.io/rda/data-type-and-data-structure). 
 
-Because an RDA container is application independent, it allows "decoupling" the data-transport function from the business-related functions in an application's design, for better flexibility and maintainability. RDA can be particularly beneficial for maintaining compatibility if in a system there are one-to-many, or many-to-many applications connected by data-exchanging pipelines.
+Because an RDA container is schema-less and application independent, it allows "decoupling" the data-transport function from the business-related functions in the system's design. Using RDA can be particularly beneficial if applications in a connected system require both flexibility and easy-to-manage compatibility.
+
 
 ## Benefits Of Using RDA
  
