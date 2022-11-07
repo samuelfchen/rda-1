@@ -22,25 +22,25 @@ While RDA is also a container format for structured data, it is specifically des
 * RDA data element is generalized to have only two "data types"[^2]: type _RDA_ is for storing "composite" data values, and type _string_ is for storing "scalar/primitive" data values.   
 [^2]:RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
 
-Using the application independent RDA container in data exchange allows implementing a "universal data transport" layer that is separated business-related functions. Such "decoupling" in the data exchange architecture allows the connected applications to evolve independently and to maintain compatibility flexibly.
+Using the application independent RDA container allows implementing a generic and unified data transport layer that is separated from business-related functions. The layered architecture (aka "decoupling") allows the connected applications to evolve independently and to flexibly maintain compatibility.
 
 ## Benefits Of Using RDA
  
-One use of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to a Python program, and in the Python program, you can de-serialize a "User" object using the received RDA container, because unlike using XML/JSON, the "Person" object and the "User" object aren't necessarily "sharing the same schema" during serialization and de-serialization. 
+One use of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to a Python program, and in the Python program, you can de-serialize a "User" object using the received RDA container. Unlike using XML/JSON, the "Person" object and the "User" object are not bound to a schema, so they can be developed and maintained separately. 
 
-Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because of RDA's recursive nature, each "pocket" in an RDA container is itself an RDA container. Multiple "children" RDAs can be placed inside a "parent" RDA, which means you can transfer data of multiple versions and multiple formats "side-by-side" in a single container. 
+Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because of RDA's recursive nature, each "pocket" in an RDA container is itself an RDA container, and multiple "children" RDAs can be placed inside a "parent" RDA. This means you can transfer data of multiple versions and multiple formats "side-by-side" in a single container. 
 
-Indeed, being able to send multiple pieces of "anything" side-by-side in a container brings many interesting uses: how about sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
+Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: how about sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
-Thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than an equivilent XML or JSON container, and it is much easier to develop RDA parsers. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows native line-breaks in the data, whilst in other formats line-breaks are ignored or will cause parsing errors unless that special replacement strings (e.g. "\\n") are used in the encoding.
+Thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to develop a parser. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "&#xA;") or they will be ignored by the parser.
 
 ## Getting Started
 
 This repo includes the RDA-encoding spec and an RDA encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API methods like in the example below. 
 
-_*** There is no installation or other dependency required. ***_
+_*** There is no installation or other dependency required for using the API. ***_
 
-#### _API Part 1: Class Rda_
+#### _API Part 1: Rda class_
 
 The _Rda class_ includes implementation of both RDA encoding and decoding, and is intuitively modeled as a "container". It provides the following methods:
 
@@ -75,9 +75,9 @@ class RdaDemo
 }
 ```
 
-#### _API Part 2: Interface IRdaSerializable_
+#### _API Part 2: IRdaSerializable interface_
 
-The _IRdaSerializable interface_ is for applications implementing object serialization using RDA. It defines two methods:
+The _IRdaSerializable interface_ is for applications to implement object serialization using RDA. It defines two methods:
 
 * **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
 
@@ -103,9 +103,7 @@ Here are some articles and thoughts about RDA. (Warning: some of these are curre
 
 ## Contributing
 
-We are excited about what can be achieved using RDA, and can't wait to see if this brand-new data format can be used in your project and meet your data-exchange needs. 
-
-You can also help us in this project by - 
+You can help this project by - 
 
 - Giving us feedback on how you use the API in your project.
 - Improving existing code, test cases, and documentation.
