@@ -5,7 +5,7 @@
 
 Recursive Delimited Array, or RDA, is a text-encoding format for a data container, for storing and transporting structured data in a text form.
 
-Unlike XML and JSON, RDA container is **schema-less**, meaning the same container can be used for storing any structured data of any application. 
+Unlike XML and JSON, RDA container is **schema-less**, meaning the same container can be used for storing any structured data from any application. 
 
 > *An RDA container is like a plain box that has an unlimited number of pockets for freely storing "any stuff", whereas an XML or JSON container is like a wallet, which has specific places for storing coins, notes, and cards.* 
 
@@ -36,19 +36,19 @@ Thanks to its simple and efficient delimiter-based encoding, an RDA container is
 
 ## Getting Started
 
-This repo includes the RDA-encoding spec and an RDA encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). There are only two "parts" in the API. To start, simply include the provided source files in your project and start using the API methods like in the example below. 
+This repo includes the RDA Encoding spec and an RDA-encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API, which has only two "parts" as explained below.
 
 _*** There is no installation or other dependency required for using the API. ***_
 
 #### _API Part 1: the Rda class_
 
-The _Rda class_ includes implementation of both RDA encoding and decoding, and is intuitively modeled as a "container". It provides the following methods:
+The _Rda class_ is all you need for programming with RDA. It intuitively modeled as a "container" and provides methods for both RDA encoding and decoding:
 
-* **Setter-Getter**  methods are for assigning and retrieving the container's content using index-based addresses, 
+* **Setter-Getter** methods are for assigning and retrieving the container's content using index-based addresses, 
 * **ToString** method is for RDA-encoding, i.e. serializing the container object and its content into a string, and 
-* **Parse** method is for RDA-decoding, i.e. converting an RDA-encoded string back to a Rda container object in a program.
+* **Parse** method is for RDA-decoding, i.e. de-serializing an RDA-encoded string to an RDA container object in a program.
 
-The following example (in C#[^3]) gives a glimpse of how (simple) these methods can be used - 
+The following code example (in C#[^3]) demonstrates how (simple) to use these methods - 
 
 [^3]: Methods of using the Java API and the Python API are very similar.
 
@@ -57,20 +57,21 @@ using UniversalDataTransport;  //the Rda class is defined in this domain
 
 class RdaDemo
 {
-    Rda rda1 = new Rda();    //create an RDA container object
+    //create an RDA container
+    Rda rda1 = new Rda();    
 
-    //SetValue(): store a string value at a specific location (by index) in the container
+    //SetValue(): store some values into the container
     rda1.SetValue(0, "One");      //store value "One" at index = 0
     rda1.SetValue(1, "Two");
     rda1.SetValue(2, "Three");
 
-    //ToString(): serialize/encode the container and its content to a string
+    //ToString(): serialize (encode) the container and its content to an RDA formatted string
     System.Console.WriteLine(rda1.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
-    //Parse(): de-serialize an RDA-encoded string to an RDA container object 
+    //Parse(): de-serialize an RDA formatted string to an RDA container object 
     Rda rda2 = Rda.Parse(rda1.ToString());   //Parse() method does the reverse of the ToString() method.
 
-    //GetValue(): retrieve a value from a given (index) location in an RDA container   
+    //GetValue(): retrieve a value from an index location in an RDA container   
     System.Console.WriteLine(rda2.GetValue(2));   //print "Three", the value stored at index=2 in the container.
 }
 ```
