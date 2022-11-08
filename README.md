@@ -36,11 +36,11 @@ Thanks to its simple and efficient delimiter-based encoding, an RDA container is
 
 ## Getting Started
 
-> *The simple API has only two "pieces" ... and has no dependency and requires no installation.*
+> *The RDA API contains only two "pieces" of code, and it has no 3rd party dependency and requires no installation.*
 
-This repo includes the RDA Encoding spec and an RDA-encoding API which is implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods as explained below.
+This repo includes the RDA Encoding spec and an RDA-encoding API implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods in your program, as explained below.
 
-#### _API "Piece 1": the Rda class_
+#### _API "Piece #1": the Rda class_
 
 The _Rda class_ implements both RDA encoding and decoding. It's modeled as a "container" object which provides these methods:
 
@@ -68,15 +68,15 @@ class RdaDemo
     //ToString(): serialize (encode) the container and its content to an RDA formatted string
     System.Console.WriteLine(rda1.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
-    //Parse(): de-serialize an RDA formatted string to an RDA container object 
+    //Parse(): de-serialize an RDA formatted string back to an RDA container object 
     Rda rda2 = Rda.Parse(rda1.ToString());   //Parse() method does the reverse of the ToString() method.
 
-    //GetValue(): retrieve a value from an index location in an RDA container   
+    //GetValue(): retrieve a value from in an RDA container at an index location    
     System.Console.WriteLine(rda2.GetValue(2));   //print "Three", the value stored at index=2 in the container.
 }
 ```
 
-#### _API "Piece 2": the IRdaSerializable interface_
+#### _API "Piece #2": the IRdaSerializable interface_
 
 The _IRdaSerializable interface_ is for applications to implement object serialization using RDA. It defines two methods:
 
@@ -84,7 +84,7 @@ The _IRdaSerializable interface_ is for applications to implement object seriali
 
 * **FromRda(rda)**: restores the object's specific properties from values in a given RDA container, for de-serialization.
 
-Object serialization using RDA container is explained in-details in [this article](https://foldda.github.io/rda/object-serialization-pattern).
+The "RDA Method" of object-serialization is discussed in [this article](https://foldda.github.io/rda/object-serialization-pattern).
 
 #### _Test Cases_
 
