@@ -5,15 +5,15 @@
 
 Recursive Delimited Array, or RDA, is a standard file format for storing and transporting structured data as text.
 
-Unlike XML and JSON, RDA is **schema-less** and **generic**, meaning an RDA file (aka "RDA container") can be used for storing data of any type or any structure, from any application. 
+Unlike XML and JSON, the RDA format is **schema-less** and is for **generic data**, meaning the same RDA file (aka "RDA container") can be used to store any type of data, of any structure, from any application. 
 
 ## A Schema-less Data Container
 
-> *An RDA container is like a bag with lots of pockets, where each pocket can grow and expand and can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
+> *An RDA container is like a bag with infinite number of pockets, where each pocket can grow and expand and can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
 
-XML and JSON use schema for specifying the types and the structure of their data, meaning XML/JSON containers are application-data specific, as only data with the specified types and structure can fit into a container. If an application has a data format change and requires changing the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
+XML and JSON use schema for specifying the types and the structure of their data, meaning XML/JSON containers are restricted to application-specific data, that is, only data with the specified types and structure be stored in the container. If an application has a data format change and requires changing the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
 
-While RDA is also a container format for structured data, it is specifically designed to be **generic** and application independent[^1]:
+While RDA is also a container format for storing structured data, it is designed to be **generic** and application independent[^1]:
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
