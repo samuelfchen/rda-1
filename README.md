@@ -3,7 +3,7 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a standard file format for storing and transporting structured data as text.
+Recursive Delimited Array, or RDA, is a standard text file format for storing and transporting structured data in a text string.
 
 Unlike XML and JSON, the RDA format is **schema-less** and is for **generic data**, meaning the same RDA file (aka "RDA container") can be used to store any type of data, of any structure, from any application. 
 
@@ -26,13 +26,13 @@ While RDA is also a container format for storing structured data, it is designed
 
 > *Using the application-independent RDA container allows implementing a generic and unified data transport layer that any application can use for transfer and exchange data. This generic data transport layer "decouples" the connected applications, allowing them to evolve independently and to flexibly maintain compatibility.*
  
-One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to a Python program, and in the Python program, you can de-serialize a "User" object using the received RDA container. Unlike using XML/JSON, the "Person" object and the "User" object are not bound to a schema, so they can be developed and maintained separately. 
+One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to many receivers, and in a Python program, you can de-serialize a "User" object using the received RDA container. Unlike using XML/JSON, the "Person" object and the "User" object are not bound to a schema, so they can be programmed and maintained separately. 
 
-Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA has a recursive storage structure, you can store "children" RDAs as data elements in a "parent" RDA. It means you can transfer multiple versions and multiple formats of your data (as child RDAs) "side-by-side" in an RDA container. 
+Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA has a recursive storage structure, you can store "children" RDAs as data elements in a "parent" RDA. It means you can transfer multiple versions and multiple formats of your data (as child RDAs) "side-by-side" in an RDA container, and the receiver can pick the right version and the right format to use. 
 
 Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: how about sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
-Thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to develop a parser. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "&#xA;") or they will be ignored by the parser.
+Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to develop a parser. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "&#xA;") or they will be ignored by the parser.
 
 ## Getting Started
 
