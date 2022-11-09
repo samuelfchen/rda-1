@@ -9,7 +9,7 @@ Unlike XML and JSON, the RDA format is **schema-less** and is for **generic data
 
 ## A Schema-less Data Container
 
-> *An RDA container is like a bag with infinite number of pockets, where each pocket can grow and expand and can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
+> *An RDA container is like an expandable bag with infinite number of pockets, where in each pocket you can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
 
 XML and JSON use schema for specifying the types and the structure of their data, meaning XML/JSON containers are restricted to application-specific data, that is, only data with the specified types and structure be stored in the container. If an application has a data format change and requires changing the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
 
@@ -129,5 +129,5 @@ You can be a contributor and help this project! Please contact us.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
 
-"Recursive Delimited Array" and "RDA" are trademarks of [Foldda Pty Ltd](https://foldda.com) of Australia.
+"Recursive Delimited Array" and "RDA" are trademarks of [Foldda Pty Ltd](https://foldda.com) - an Australia software company.
 
