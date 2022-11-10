@@ -5,7 +5,7 @@
 
 Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
 
-Unlike XML and JSON that have their data restricted by a schema that's specific to an application, the RDA format is **schema-less** and for **generic data**. An RDA-encoded string, also known as an "RDA container", can store any data from any application. 
+Unlike XML and JSON that uses a schema to restrict their data to a specific application, the RDA format is **schema-less** and for **generic data**. An RDA-encoded string, also known as an "RDA container", can store any data from any application. 
 
 ## A Schema-less Data Container
 
