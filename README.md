@@ -3,32 +3,33 @@
 
 <img src="docs/image/rda_logo.png" align="right" height="128">
 
-Recursive Delimited Array, or RDA, is a standard text file format for storing and transporting structured data in a text string.
+Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
 
-Unlike XML and JSON that have their data types and data structure restricted by a schema, the RDA format is **schema-less** and is for **generic data**, meaning the same RDA file (aka "RDA container") can be used to store any type of data, of any structure, from any application. 
+Unlike XML and JSON that have their data restricted by a schema that's specific to an application, the RDA format is **schema-less** and for **generic data**. An RDA-encoded string, also known as an "RDA container", can store any data from any application. 
 
 ## A Schema-less Data Container
 
-> *An RDA container is like an expandable bag with infinite number of pockets, where in each pocket you can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
+> *An RDA container is like a expandable shelf that provides unlimited space, where you can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
 
 When use XML/JSON containers in data exchange between applications, the applications' data must comply with the specified types and structure so it can be stored in the container. If an application requires changing its data format and the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
 
-While RDA is also a text container format for storing structured data[^1], it is designed to be **generic** and application independent:
+While RDA is also a text-encoded data format for storing structured data[^1], it is designed to be generic and **application independent**:
 
 [^1]: Full details of the encoding rules can be found [here](https://foldda.github.io/rda/rda-encoding-rule).
 
 * Instead of using tags or markups, RDA uses delimited encoding for separating and structuring data elements; 
-* Instead of using named paths for navigating a data elements "tree", RDA uses integer-based indexes for addressing data elements in its multi-dimensional array storage space; 
-* RDA data element is generalized to have only two "data types"[^2]: type _RDA_ is for storing "composite" data values, and type _string_ is for storing "scalar/primitive" data values.   
+* Instead of using named paths, RDA uses integer-based indexes for addressing data elements inside a container; 
+* Instead of having multiple, specific data types, data elements in RDA has only two generalized data types[^2]: type _RDA_ and type _string_, which are for "structured/composite" and "scalar/primitive" data values repectively.
+ 
 [^2]:RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
 
 ## Benefits Of Using RDA
 
-> *Using the application-independent RDA container allows implementing a generic and unified data transport layer that any application can use for transfer and exchange data. This generic data transport layer "decouples" the connected applications, allowing them to evolve independently and to flexibly maintain compatibility.*
+> *RDA allows implementing a generic and unified data transport layer that applications can utilize for consistently sending and receiving data, so they are "loosely coupled" when require data exchange, and can be separately and flexibly maintained for compatibility.*
  
 One powerful feature of RDA is for implementing cross-language and cross-application object-serialization. For example, you can send [a "Person" object as a serialized RDA container](https://foldda.github.io/rda/2022/10/03/obj-serialization-pattern.html) from your Java program to many receivers, and in a Python program, you can de-serialize a "User" object using the received RDA container. Unlike using XML/JSON, the "Person" object and the "User" object are not bound to a schema, so they can be programmed and maintained separately. 
 
-Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA has a recursive storage structure, you can store "children" RDAs as data elements in a "parent" RDA. It means you can transfer multiple versions and multiple formats of your data (as child RDAs) "side-by-side" in an RDA container, and the receiver can pick the right version and the right format to use. 
+Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA has a recursive storage structure, you can have "children" RDAs as data elements in a "parent" RDA. It means you can transfer multiple versions and multiple formats of your data (as child RDAs) "side-by-side" in an RDA container, and the receiver can pick the right version and the right format to use. 
 
 Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: how about sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
