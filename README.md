@@ -19,7 +19,7 @@ While RDA is also a text-encoded data format for storing structured data[^1], it
 
 * Instead of using tags or markups, RDA uses delimited encoding for separating and structuring data elements; 
 * Instead of using named paths, RDA uses integer-based indexes for addressing data elements inside a container; 
-* Instead of having multiple, specific data types, data elements in RDA has only two generalized data types[^2]: type _RDA_ and type _string_, which are for "structured/composite" and "scalar/primitive" data values repectively.
+* Instead of having multiple, specific data types, data elements in RDA has only two generalized data types[^2]: _RDA_ and _string_, for "composite" and "primitive" data values repectively.
  
 [^2]:RDA data types and data structure are [discussed here](https://foldda.github.io/rda/data-type-and-data-structure). 
 
