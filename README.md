@@ -5,7 +5,7 @@
 
 Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
 
-Unlike XML and JSON that uses a schema to restrict their data to a specific application, the RDA format is **schema-less** and for **generic data**. An RDA-encoded string, also known as an "RDA container", can store any data from any application. 
+Unlike XML and JSON that uses a schema to restrict their data to a specific application, the RDA format is **schema-less** and is for **generic data**. An RDA-encoded string, also known as an "RDA container", can store any data from any application. 
 
 ## A Schema-less Data Container
 
@@ -37,11 +37,11 @@ Also, thanks to its simple and efficient delimiter-based encoding, an RDA contai
 
 ## Getting Started
 
-> *The RDA API contains only two "pieces" of code, and it has no 3rd party dependency and requires no installation.*
+> *The RDA API contains only one class and one interface. It has no 3rd party dependency and requires no installation.*
 
-This repo includes the RDA Encoding spec and an RDA-encoding API implemented in [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods in your program, as explained below.
+Part of this repo is the RDA-encoding API implemented in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://git  hub.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods in your program, as explained below.
 
-#### _API "Piece #1": the Rda class_
+#### _API Part 1: the Rda class_
 
 The _Rda class_ implements both RDA encoding and decoding. It's modeled as a "container" object which provides these methods:
 
@@ -77,15 +77,15 @@ class RdaDemo
 }
 ```
 
-#### _API "Piece #2": the IRdaSerializable interface_
+#### _API Part 2: the IRdaSerializable interface_
 
-The _IRdaSerializable interface_ is for applications to implement object serialization using RDA. It defines two methods:
+The _IRdaSerializable interface_ defines two methods for applications to implement object serialization using RDA:
 
 * **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
 
 * **FromRda(rda)**: restores the object's specific properties from values in a given RDA container, for de-serialization.
 
-The "RDA Method" of object-serialization is discussed in [this article](https://foldda.github.io/rda/object-serialization-pattern).
+The so-called "RDA Method of Object-Serialization" is described in [this article](https://foldda.github.io/rda/object-serialization-pattern).
 
 #### _Test Cases_
 
