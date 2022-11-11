@@ -5,6 +5,7 @@ import unicodedata
 from i_rda_serializable import IRdaSerializable
 
 from encoding import RdaEncoding
+
 # from i_rda_serializable import IRdaSerializable
 from utils import range_contains
 
@@ -41,11 +42,12 @@ class Rda(IRdaSerializable):
 
         self._encoding = encoding if encoding else RdaEncoding()
         self._home = parent
-    
+
     """Interface"""
+
     def to_rda(self) -> Rda:
         return self
-    
+
     def from_rda(self, rda: Rda):
         if rda.dimension() == 0:
             self.set_scalar_value(rda.get_scalar_value())
@@ -67,8 +69,7 @@ class Rda(IRdaSerializable):
             payload = rda_string[len(encoding.delimiters) + 2 :]  # TODO: check this
             rda.parse_payload(
                 payload,
-                Rda.determine_parsing_format_version(payload)
-                == FORMATTING_VERSION.V2,
+                Rda.determine_parsing_format_version(payload) == FORMATTING_VERSION.V2,
             )
 
         return rda
@@ -171,9 +172,7 @@ class Rda(IRdaSerializable):
             return child_rda.get_scalar_value()
         return ""
 
-    def get_rda_array(
-        self, section_int_address: Optional[List[int]]
-    ) -> Rda:
+    def get_rda_array(self, section_int_address: Optional[List[int]]) -> Rda:
         if not section_int_address or len(section_int_address) == 0:
             return self
         else:
@@ -182,8 +181,8 @@ class Rda(IRdaSerializable):
             if len(section_int_address) == 1 or not child:
                 return child
             else:
-                section_int_address.pop(0)
                 next_level_section_index_address = section_int_address.copy()
+                next_level_section_index_address.pop(0)
                 return child.get_rda_array(next_level_section_index_address)
 
     def set_rda_array(
@@ -384,8 +383,8 @@ class Rda(IRdaSerializable):
                 or range_contains(delimiters, 0, len(delimiters), next_char)
             ):
                 continue
-            unescaped+=current_char
-        unescaped+=value_chars[len(value_chars) - 1]
+            unescaped += current_char
+        unescaped += value_chars[len(value_chars) - 1]
 
         return unescaped
 
