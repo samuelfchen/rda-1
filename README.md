@@ -5,13 +5,13 @@
 
 Recursive Delimited Array, or RDA, is an encoding format for storing and transporting structured data in a text string.
 
-Unlike XML and JSON that uses a schema to restrict their data to a specific application, the RDA format is **schema-less** and is for **generic data**. An RDA-encoded string, also known as an "RDA container", can store any data from any application. 
+Unlike XML and JSON that restrict the data to a specific application using a schema, the RDA format is **schema-less** and is for **generic data**. An RDA-encoded string, aka "RDA container", can store any data from any application. 
 
 ## A Schema-less Data Container
 
-> *An RDA container is like a expandable shelf that provides unlimited space, where you can store "anything", whereas an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
+> *An RDA container is like a expandable shelf that provides unlimited space where you can store "anything", and an XML or JSON container is like a wallet, where there are specific places for coins, notes, and cards.* 
 
-When use XML/JSON containers in data exchange between applications, the applications' data must comply with the specified types and structure so it can be stored in the container. If an application requires changing its data format and the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
+When use XML/JSON containers for data exchange between applications, the applications' data must comply with the schema-specified types and structure to be fit into the container. If an application requires changing its data format and the schema, all other connected applications will need to change their container-parsing logic to remain compatible, and this can be difficult if the other applications are developed and maintained by different parties.
 
 While RDA is also a text-encoded data format for storing structured data[^1], it is designed to be generic and **application independent**:
 
@@ -31,25 +31,25 @@ One powerful feature of RDA is for implementing cross-language and cross-applica
 
 Another use of RDA is maintaining versioning compatibility between a sender and a receiver. Because RDA has a recursive storage structure, you can have "children" RDAs as data elements in a "parent" RDA. It means you can transfer multiple versions and multiple formats of your data (as child RDAs) "side-by-side" in an RDA container, and the receiver can pick the right version and the right format to use. 
 
-Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: how about sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
+Indeed, being able to send multiple pieces of "anything" side-by-side in a container can have many interesting uses: like sending XML data (which is a string) together with its DTD (another string), or sending an encrypted document together with the associated digital signature and public key, or sending a computing "workload" that has some data together with an executable script to a data-processing unit, etc.
 
-Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to develop a parser. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "&#xA;") or they will be ignored by the parser.
+Also, thanks to its simple and efficient delimiter-based encoding, an RDA container is much more compact than a XML or JSON container with the same content, and it is much easier to parse. RDA encoding is also more robust and resilient to data corruption, as it does not have any reserved keyword or character. For example, it allows the data to contain native line-breaks as part of the value, whilst in XML/JSON line-breaks must be replaced with a reserved string (eg "&#xA;") or they will be ignored by the parser.
 
 ## Getting Started
 
-> *The RDA API contains only one class and one interface. It has no 3rd party dependency and requires no installation.*
+> *The RDA API contains only one class and one interface which are easy to understand and to use. The API has no 3rd party dependency and requires no installation.*
 
-Part of this repo is the RDA-encoding API implemented in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://git  hub.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods in your program, as explained below.
+The RDA-encoding API from Part of this repo is available in three languages: [C#](https://github.com/foldda/rda/tree/main/src/CSharp), [Java](https://github.com/foldda/rda/blob/main/src/Java/), and [Python](https://github.com/foldda/rda/blob/main/src/Python). To start, simply include the provided source files in your project and start using the API objects and methods as part of your program:
 
 #### _API Part 1: the Rda class_
 
-The _Rda class_ implements both RDA encoding and decoding. It's modeled as a "container" object which provides these methods:
+The _Rda class_ is modeled as a "container" object. It implements the RDA encoding and decoding via these methods:
 
 * **Setter-Getter** methods are for assigning and retrieving the container's content using index-based addresses, 
 * **ToString** method is for RDA-encoding, i.e. serializing the container object and its content into a string, and 
 * **Parse** method is for RDA-decoding, i.e. de-serializing an RDA-encoded string to an RDA container object in a program.
 
-The following code example (in C#[^3]) demonstrates how to use these methods - 
+The following code sample[^3] shows how these methods are used to serialized and de-serialize a data object.
 
 [^3]: Methods of using the Java API and the Python API are very similar.
 
@@ -58,15 +58,18 @@ using UniversalDataTransport;  //the Rda class is defined in this domain
 
 class RdaDemo
 {
+    //a data object to be serialized
+    string[] data = new string[]{"One", "Two", "Three"};
+    
     //create an RDA container
     Rda rda1 = new Rda();    
 
-    //SetValue(): store some values into the container
-    rda1.SetValue(0, "One");      //store value "One" at index = 0
-    rda1.SetValue(1, "Two");
-    rda1.SetValue(2, "Three");
+    //SetValue(): store properties of data[] into the container
+    rda1.SetValue(0, data[0]);  //store value "One" at index = 0
+    rda1.SetValue(1, data[1]);
+    rda1.SetValue(2, data[2]);
 
-    //ToString(): serialize (encode) the container and its content to an RDA formatted string
+    //ToString(): serialize the container and its content to an RDA-encoded string
     System.Console.WriteLine(rda1.ToString());   //print the encoded container string, eg "|\|One|Two|Three"
 
     //Parse(): de-serialize an RDA formatted string back to an RDA container object 
@@ -79,13 +82,13 @@ class RdaDemo
 
 #### _API Part 2: the IRdaSerializable interface_
 
-The _IRdaSerializable interface_ defines two methods for applications to implement object serialization using RDA:
+The _IRdaSerializable interface_ defines two methods for applications to implement arbitrarily complex object-serialization using RDA:
 
 * **ToRda()**: produces an RDA container that contains specific properties of the object, for serialization. 
 
 * **FromRda(rda)**: restores the object's specific properties from values in a given RDA container, for de-serialization.
 
-The so-called "RDA Method of Object-Serialization" is described in [this article](https://foldda.github.io/rda/object-serialization-pattern).
+An example of complex object-serialization using RDA container [can be found here.](https://foldda.github.io/rda/object-serialization-pattern).
 
 #### _Test Cases_
 
@@ -113,10 +116,6 @@ You can help this project by -
 - Participating in discussions and giving your insight.
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, please take a look at the [tags on this repository](https://github.com/sierrathedog/rda/tags).
 
 ## Authors
 
