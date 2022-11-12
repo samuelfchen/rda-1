@@ -7,16 +7,16 @@ def test_constructor_and_parsing_test():
     rda0 = Rda.parse(rda_string0)
     assert "" == rda0.to_string()
     value = "Two"
-    rda0.set_value(2,value)
+    rda0.set_value(2, value)
     assert value == rda0.get_value(2)
     assert 1 == rda0.dimension()
 
     rda_string0 = "Xyz"
-    addr = [1,2,3]
+    addr = [1, 2, 3]
     rda0 = Rda.parse(rda_string0)
     assert rda_string0 == rda0.get_scalar_value()
     rda0.set_value_array(addr, value)
-    assert rda_string0==rda0.get_scalar_value()
+    assert rda_string0 == rda0.get_scalar_value()
     assert value == rda0.get_value_array(addr)
     assert 3 == rda0.dimension()
 
