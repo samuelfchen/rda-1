@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.0</TargetFramework>
     <RootNamespace>UniversalDataTransport</RootNamespace>
     <AssemblyName>UniversalDataTransport</AssemblyName>
-    <Company>Brilliant.NET</Company>
+    <Company>Foldda Pty Ltd</Company>
     <Authors>Michael Chen</Authors>
     <PackageIcon>recurrsive_squares_128c.png</PackageIcon>
     <NoWin32Manifest>true</NoWin32Manifest>
