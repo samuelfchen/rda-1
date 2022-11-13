@@ -135,5 +135,3 @@ dmypy.json
 src/CSharp/bin
 src/CSharp/obj
 src/CSharp/TestResults
-src/CSharp/UnitTests/bin
-src/CSharp/UnitTests/obj
