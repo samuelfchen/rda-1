@@ -1,6 +1,6 @@
 ﻿// Copyright (c) 2020 Michael Chen
 // Licensed under the MIT License -
-// https://github.com/sierrathedog/rda/blob/main/LICENSE
+// https://github.com/foldda/rda/blob/main/LICENSE
 
 namespace UniversalDataTransport
 {
@@ -11,7 +11,7 @@ namespace UniversalDataTransport
      * 
      */
 
-    public interface IRdaSerializable
+    public interface IRda
     {
         /// <summary>
         /// Stores properties into the RDA.
@@ -23,7 +23,7 @@ namespace UniversalDataTransport
         /// Populate properties with the values from the RDA
         /// </summary>
         /// <param name="rda">An Rda instance that carries the properties of an object to be restored.</param>
-        IRdaSerializable FromRda(Rda rda);
+        IRda FromRda(Rda rda);
     }
 }
 

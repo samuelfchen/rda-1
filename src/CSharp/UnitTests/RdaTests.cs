@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Michael Chen
 // Licensed under the MIT License -
-// https://github.com/sierrathedog/rda/blob/main/LICENSE
+// https://github.com/foldda/rda/blob/main/LICENSE
 
 using UniversalDataTransport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

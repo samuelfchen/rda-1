@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eo1cGiFrlOIO8ylC+TET3QJ4roj/SULwUJ2OtSIreWh7XxWgnUQdnBb1gIAAG7wJuvv4fivLUu94txkDSO+tvA==",
+  "dgSpecHash": "nREBo38Gs4Xgpz4J43EhvJ4+O1N5NPX2HJpqMvHLwrF1Vaw6uu5T/oWesWLOYoYckDUGkZI981LNjj+fC2sc1w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UniversalDataTransport.csproj",
+  "projectFilePath": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UniversalDataTransport.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\micha\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\micha\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",

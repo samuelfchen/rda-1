@@ -130,3 +130,8 @@ dmypy.json
 
 .vs/
 .vscode/
+
+# API artifacts 
+src/CSharp/bin
+src/CSharp/obj
+src/CSharp/TestResults

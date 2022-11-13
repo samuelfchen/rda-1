@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj": {}
+    "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj": {
+    "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj",
         "projectName": "UnitTests",
-        "projectPath": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj",
+        "projectPath": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UnitTests\\UnitTests.csproj",
         "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UnitTests\\obj\\",
+        "outputPath": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UnitTests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UniversalDataTransport.csproj": {
-                "projectPath": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UniversalDataTransport.csproj"
+              "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UniversalDataTransport.csproj": {
+                "projectPath": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UniversalDataTransport.csproj"
               }
             }
           }
@@ -75,8 +75,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -85,18 +84,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.412\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UniversalDataTransport.csproj": {
+    "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UniversalDataTransport.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UniversalDataTransport.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UniversalDataTransport.csproj",
         "projectName": "UniversalDataTransport",
-        "projectPath": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\UniversalDataTransport.csproj",
+        "projectPath": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\UniversalDataTransport.csproj",
         "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\micha\\Source\\Repos\\sierrathedog\\rda\\src\\CSharp\\obj\\",
+        "outputPath": "C:\\Users\\micha\\source\\repos\\foldda\\rda\\src\\CSharp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -135,7 +134,7 @@
               "autoReferenced": true
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.412\\RuntimeIdentifierGraph.json"
         }
       }
     }
