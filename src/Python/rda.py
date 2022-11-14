@@ -5,6 +5,7 @@ import unicodedata
 from i_rda_serializable import IRdaSerializable
 
 from encoding import RdaEncoding
+
 # from i_rda_serializable import IRdaSerializable
 from utils import range_contains
 
@@ -19,15 +20,15 @@ INDENT = "  "
 
 
 class Rda(IRdaSerializable):
-    children: List[Rda]
+    elements: List[Rda]
 
     _scalar_value: Optional[str] = None
-    _parent: Rda
+    _home: Rda
 
     _encoding: RdaEncoding
 
     def global_encoding(self):
-        return self._parent.global_encoding() if self._parent else self._encoding
+        return self._home.global_encoding() if self._home else self._encoding
 
     """Constructors"""
 
@@ -36,23 +37,24 @@ class Rda(IRdaSerializable):
         encoding: Optional[RdaEncoding] = None,
         parent: Optional[Rda] = None,
     ) -> None:
-        self.children = []
+        self.elements = []
         self._scalar_value = None
 
         self._encoding = encoding if encoding else RdaEncoding()
-        self._parent = parent
-    
+        self._home = parent
+
     """Interface"""
+
     def to_rda(self) -> Rda:
         return self
-    
+
     def from_rda(self, rda: Rda):
         if rda.dimension() == 0:
             self.set_scalar_value(rda.get_scalar_value())
         else:
-            self.children.clear()
-            for child in rda.children:
-                self.children.append(child)
+            self.elements.clear()
+            for child in rda.elements:
+                self.elements.append(child)
 
     """NON HELPER METHODS"""
 
@@ -67,8 +69,7 @@ class Rda(IRdaSerializable):
             payload = rda_string[len(encoding.delimiters) + 2 :]  # TODO: check this
             rda.parse_payload(
                 payload,
-                Rda.determine_parsing_format_version(payload)
-                == FORMATTING_VERSION.V2,
+                Rda.determine_parsing_format_version(payload) == FORMATTING_VERSION.V2,
             )
 
         return rda
@@ -82,24 +83,24 @@ class Rda(IRdaSerializable):
     def dimension(self) -> int:
         max_child_dimension = -1
 
-        for c in self.children:
+        for c in self.elements:
             max_child_dimension = max(max_child_dimension, c.dimension())
 
         return max_child_dimension + 1
 
     def level(self) -> int:
-        return self._parent.level() + 1 if self._parent else 0
+        return self._home.level() + 1 if self._home else 0
 
     def get_scalar_value(self) -> str:
-        if len(self.children) > 0:
-            value = self.children[0]._scalar_value
+        if len(self.elements) > 0:
+            value = self.elements[0]._scalar_value
         else:
             value = self._scalar_value
 
         return value if value else ""
 
     def set_scalar_value(self, value: str) -> None:
-        self.children: List[Rda] = []
+        self.elements: List[Rda] = []
         self._scalar_value = value
 
     def to_string(self) -> str:
@@ -127,23 +128,23 @@ class Rda(IRdaSerializable):
             self.global_encoding().extend_delimiters(
                 self.level() + child_rda.dimension() + 1
             )
-            child_rda._parent = self
+            child_rda._home = self
 
-            self.children[index] = child_rda
+            self.elements[index] = child_rda
         else:
             self.global_encoding().extend_delimiters(self.level() + 1)
-            self.children[index] = Rda(parent=self)
+            self.elements[index] = Rda(parent=self)
 
     def get_rda(self, index: int) -> Rda:
         self.global_encoding().extend_delimiters(self.level() + 1)
 
         if self.dimension() == 0:
-            self.children.append(Rda(parent=self))
-            self.children[0].set_scalar_value(self._scalar_value)
+            self.elements.append(Rda(parent=self))
+            self.elements[0].set_scalar_value(self._scalar_value)
 
         self.ensure_array_length(index)
 
-        return self.children[index]
+        return self.elements[index]
 
     def set_value(self, index: int, value: str) -> None:
         rda = Rda()
@@ -171,9 +172,7 @@ class Rda(IRdaSerializable):
             return child_rda.get_scalar_value()
         return ""
 
-    def get_rda_array(
-        self, section_int_address: Optional[List[int]]
-    ) -> Rda:
+    def get_rda_array(self, section_int_address: Optional[List[int]]) -> Rda:
         if not section_int_address or len(section_int_address) == 0:
             return self
         else:
@@ -182,8 +181,8 @@ class Rda(IRdaSerializable):
             if len(section_int_address) == 1 or not child:
                 return child
             else:
-                section_int_address.pop(0)
                 next_level_section_index_address = section_int_address.copy()
+                next_level_section_index_address.pop(0)
                 return child.get_rda_array(next_level_section_index_address)
 
     def set_rda_array(
@@ -201,24 +200,24 @@ class Rda(IRdaSerializable):
             return ""
 
     def add_value(self, value_string: str) -> None:
-        self.set_value(len(self.children), value_string)
+        self.set_value(len(self.elements), value_string)
 
     def add_rda(self, rda: Rda) -> None:
-        self.set_rda(len(self.children), rda)
+        self.set_rda(len(self.elements), rda)
 
     def get_children_value_array(self) -> List[str]:
         result: List[str] = []
 
-        if len(self.children) == 0:
+        if len(self.elements) == 0:
             result.append(self._scalar_value)
         else:
-            for child in self.children:
+            for child in self.elements:
                 result.add(child.get_scalar_value())
 
         return result
 
     def set_children_value_array(self, value: List[str]) -> None:
-        self.children: List[Rda] = []
+        self.elements: List[Rda] = []
 
         if not value or len(value) == 0:
             self._scalar_value = None
@@ -226,7 +225,7 @@ class Rda(IRdaSerializable):
             for s in value:
                 child = Rda(parent=self)
                 child._scalar_value = s
-                self.children.append(child)
+                self.elements.append(child)
 
     def content_equal(self, other: Rda) -> bool:
         if self.dimension() != other.dimension() or self.length() != other.length():
@@ -235,7 +234,7 @@ class Rda(IRdaSerializable):
             return self.get_scalar_value() == other.get_scalar_value()
         else:
             for i in range(self.length()):
-                if self.children[i].content_equal(other.children[i]) == False:
+                if self.elements[i].content_equal(other.elements[i]) == False:
                     return False
             return True
 
@@ -252,7 +251,7 @@ class Rda(IRdaSerializable):
         return self.global_encoding().escape_char
 
     def length(self) -> int:
-        return len(self.children)
+        return len(self.elements)
 
     def delimiters_in_use(self) -> List[str]:
         level = self.level()
@@ -263,7 +262,7 @@ class Rda(IRdaSerializable):
         return subarray
 
     def parse_payload(self, payload_string: str, v2_formatted: bool) -> None:
-        self.children: List[Rda] = []
+        self.elements: List[Rda] = []
 
         self._scalar_value = Rda.unescape(
             payload_string,
@@ -279,20 +278,20 @@ class Rda(IRdaSerializable):
                 child = Rda(parent=self)
                 child.parse_payload(child_payload, v2_formatted)
 
-                self.children.append(child)
+                self.elements.append(child)
 
     def trim_solo_branch(self) -> bool:
-        if len(self.children) == 1:
+        if len(self.elements) == 1:
             if (
-                self.children[0].dimension() == 0
-                or self.children[0].trim_solo_branch() == True
+                self.elements[0].dimension() == 0
+                or self.elements[0].trim_solo_branch() == True
             ):
-                self.set_scalar_value(self.children[0].get_scalar_value())
+                self.set_scalar_value(self.elements[0].get_scalar_value())
                 return True
             else:
                 return False
         else:
-            for child in self.children:
+            for child in self.elements:
                 child.trim_solo_branch()
             return False
 
@@ -384,16 +383,16 @@ class Rda(IRdaSerializable):
                 or range_contains(delimiters, 0, len(delimiters), next_char)
             ):
                 continue
-            unescaped+=current_char
-        unescaped+=value_chars[len(value_chars) - 1]
+            unescaped += current_char
+        unescaped += value_chars[len(value_chars) - 1]
 
         return unescaped
 
     def indent(self) -> str:
-        if not self._parent or len(self._parent.children) == 1:
+        if not self._home or len(self._home.elements) == 1:
             return ""
         else:
-            return self._parent.indent() + INDENT
+            return self._home.indent() + INDENT
 
     def get_payload(
         self, delimiter_chars: List[str], formatting_version: FORMATTING_VERSION
@@ -415,7 +414,7 @@ class Rda(IRdaSerializable):
 
         else:
             for i in range(self.last_non_dummy_index() + 1):
-                child = self.children[i]
+                child = self.elements[i]
                 if apply_formatting:
                     result += self.get_formatting_prefix(i)
 
@@ -426,32 +425,32 @@ class Rda(IRdaSerializable):
 
     def get_formatting_prefix(self, index: int) -> str:
         if index == 0:
-            return INDENT if len(self.children) > 1 and self._parent != None else ""
+            return INDENT if len(self.elements) > 1 and self._home != None else ""
         else:
             return LINE_BREAK + self.indent()
 
     def is_dummy(self):
-        if len(self.children) == 0:
+        if len(self.elements) == 0:
             return self._scalar_value is None
         else:
-            for child in self.children:
+            for child in self.elements:
                 if child.is_dummy() == False:
                     return False
             return True
 
     def last_non_dummy_index(self) -> int:
-        last_index = len(self.children) - 1
-        while last_index >= 0 and self.children[last_index].is_dummy() == True:
+        last_index = len(self.elements) - 1
+        while last_index >= 0 and self.elements[last_index].is_dummy() == True:
             last_index -= 1
 
         return last_index
 
     def ensure_array_length(self, index: int) -> None:
-        diff = index - len(self.children) + 1
+        diff = index - len(self.elements) + 1
 
         while diff > 0:
             dummy = Rda(parent=self)
-            self.children.append(dummy)
+            self.elements.append(dummy)
             diff -= 1
 
     def parse_children_content_sections(self, parent_payload: str) -> List[str]:
