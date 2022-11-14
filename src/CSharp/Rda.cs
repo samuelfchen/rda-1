@@ -1,13 +1,13 @@
 ﻿// Copyright (c) 2020 Michael Chen
 // Licensed under the MIT License -
-// https://github.com/foldda/rda/blob/main/LICENSE
+// https://github.com/sierrathedog/rda/blob/main/LICENSE
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 /*
- * UniversalDataTransport is a name-space for unified data storage and transportation using the RDA-encoded data format. 
+ * UniversalDataTransport name-space is for unified data storage and transportation using the RDA data storage structure. 
  */
 
 namespace UniversalDataTransport
@@ -28,7 +28,7 @@ namespace UniversalDataTransport
      * 
      */
 
-    public class Rda : IRda
+    public class Rda : IRdaSerializable
     {
         /**
          * Base properties
@@ -727,7 +727,7 @@ namespace UniversalDataTransport
             return this;
         }
 
-        public IRda FromRda(Rda rda)
+        public IRdaSerializable FromRda(Rda rda)
         {
             if (rda.Dimension == 0) 
             { 
